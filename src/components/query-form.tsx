@@ -55,22 +55,22 @@ export function QueryForm() {
 
         // Trigger analysis after getting query results
         if (result.databaseQuery && result.queryResult) { // Only analyze if query was successful
-           startAnalysisTransition(async () => {
+          startAnalysisTransition(async () => {
             try {
-                // Pass the actual query string used, not just the generated one if needed
-                // Assuming intelligentDataAnalysis needs the query string that *produced* the data
-                const analysis = await intelligentDataAnalysis({ queryString: result.databaseQuery });
-                setAnalysisResult(analysis);
+              // Pass the actual query string used, not just the generated one if needed
+              // Assuming intelligentDataAnalysis needs the query string that *produced* the data
+              const analysis = await intelligentDataAnalysis({ queryString: result.databaseQuery });
+              setAnalysisResult(analysis);
             } catch (error) {
-                console.error("Analysis Error:", error);
-                toast({
-                  variant: "destructive",
-                  title: "Analysis Failed",
-                  description: "Could not perform intelligent data analysis.",
-                });
-                setAnalysisResult(null);
+              console.error("Analysis Error:", error);
+              toast({
+                variant: "destructive",
+                title: "Analysis Failed",
+                description: "Could not perform intelligent data analysis.",
+              });
+              setAnalysisResult(null);
             }
-           });
+          });
         } else {
           setAnalysisResult(null); // No analysis if query failed or returned no results
         }
@@ -101,7 +101,7 @@ export function QueryForm() {
     const numericColumnIndex = columns.findIndex((col, index) => index > 0 && rows.every(row => isNumeric(row[index])));
 
     if (numericColumnIndex === -1) {
-        return { chartData: [], chartConfig: {}, canDisplayChart: false };
+      return { chartData: [], chartConfig: {}, canDisplayChart: false };
     }
 
     const labelKey = columns[labelColumnIndex];
@@ -113,60 +113,60 @@ export function QueryForm() {
     }));
 
     const config: ChartConfig = {
-        [valueKey]: {
-          label: valueKey,
-          color: "hsl(var(--primary))", // Use primary color from theme
-        },
-        [labelKey]: {
-          label: labelKey,
-        }
+      [valueKey]: {
+        label: valueKey,
+        color: "hsl(var(--primary))", // Use primary color from theme
+      },
+      [labelKey]: {
+        label: labelKey,
+      }
     };
 
     return { chartData: data, chartConfig: config, canDisplayChart: true };
   }, [queryResult]);
 
   return (
-    <div className="space-y-6"> {/* Reduced spacing */}
-      <Card className="shadow-lg">
-        <CardHeader className="pb-4"> {/* Reduced padding */}
-          <CardTitle className="flex items-center gap-2 text-primary text-xl"> {/* Smaller title */}
-            <Search className="h-5 w-5" /> Natural Language Query
+    <div className="space-y-6">
+      <Card className="bg-zinc-900 border border-zinc-800 shadow-lg">
+        <CardHeader className="pb-4">
+          <CardTitle className="flex items-center gap-2 text-blue-400 text-xl">
+            <Search className="h-5 w-5 text-blue-300 animate-pulse" /> Natural Language Query
           </CardTitle>
-          <CardDescription className="text-sm"> {/* Smaller description */}
+          <CardDescription className="text-sm text-zinc-400">
             Ask questions about your test data, code performance, or logs.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3"> {/* Reduced spacing */}
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
               <FormField
                 control={form.control}
                 name="query"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-sm">Your Query</FormLabel> {/* Smaller label */}
+                    <FormLabel className="text-sm text-zinc-200">Your Query</FormLabel>
                     <FormControl>
                       <Textarea
                         placeholder="e.g., Show me the test cases that failed most frequently in the last week"
-                        className="resize-none min-h-[60px]" // Shorter textarea
+                        className="resize-none min-h-[80px] bg-zinc-800 text-zinc-100 border-zinc-700 focus-visible:ring-blue-500 font-mono text-xs"
                         {...field}
                         disabled={isPending}
                       />
                     </FormControl>
-                    <FormMessage />
+                    <FormMessage className="text-xs text-red-500" />
                   </FormItem>
                 )}
               />
-              <Button type="submit" disabled={isPending} size="sm"> {/* Smaller button */}
+              <Button type="submit" disabled={isPending} size="sm" className="bg-blue-500 text-zinc-900 hover:bg-blue-400">
                 {isPending ? (
-                  <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <div className="flex items-center justify-center gap-2">
+                    <Loader2 className="h-4 w-4 animate-spin" />
                     Processing...
-                  </>
+                  </div>
                 ) : (
-                  <>
-                    <Search className="mr-2 h-4 w-4" /> Query Data
-                  </>
+                  <div className="flex items-center justify-center gap-2">
+                    <Search className="h-4 w-4" /> Query Data
+                  </div>
                 )}
               </Button>
             </form>
@@ -175,131 +175,149 @@ export function QueryForm() {
       </Card>
 
       {isQueryPending && (
-        <Card className="shadow-sm">
-          <CardContent className="p-4 flex items-center justify-center"> {/* Reduced padding */}
-            <Loader2 className="mr-2 h-5 w-5 animate-spin text-primary" />
-            <p className="text-sm text-muted-foreground">Fetching query results...</p>
+        <Card className="bg-zinc-900 border border-zinc-800 shadow-sm animate-pulse">
+          <CardContent className="p-4 flex items-center justify-center">
+            <Loader2 className="mr-2 h-5 w-5 animate-spin text-blue-400" />
+            <p className="text-sm text-zinc-400">Fetching query results...</p>
           </CardContent>
         </Card>
       )}
 
       {queryResult && (
-        <Card className="shadow-lg">
-          <CardHeader className="pb-4"> {/* Reduced padding */}
-            <CardTitle className="flex items-center gap-2 text-primary text-xl"> {/* Smaller title */}
-              <TableIcon className="h-5 w-5" /> Query Results
+        <Card className="bg-zinc-900 border border-zinc-800 shadow-lg">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-blue-400 text-xl">
+              <TableIcon className="h-5 w-5 text-blue-300" /> Query Results
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-3"> {/* Reduced spacing */}
-             <div className="space-y-1">
-                <h3 className="font-semibold text-sm flex items-center gap-1"><Lightbulb className="h-4 w-4 text-accent" /> Insight:</h3>
-                <p className="text-sm bg-secondary p-2 rounded-md">{queryResult.insight}</p> {/* Reduced padding */}
-             </div>
-             <Accordion type="single" collapsible className="w-full">
-               <AccordionItem value="sql-query">
-                 <AccordionTrigger className="text-xs font-medium py-2">View Generated SQL Query</AccordionTrigger> {/* Smaller trigger */}
-                 <AccordionContent>
-                   <pre className="text-xs bg-muted p-2 rounded-md overflow-x-auto"><code>{queryResult.databaseQuery || "No SQL query generated."}</code></pre> {/* Reduced padding */}
-                 </AccordionContent>
-               </AccordionItem>
-             </Accordion>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-sm text-yellow-400 flex items-center gap-1">
+                <Lightbulb className="h-4 w-4 text-yellow-300" /> Insight:
+              </h3>
+              <p className="text-sm bg-zinc-800 p-3 rounded-md font-mono text-zinc-200 border border-zinc-700">
+                {queryResult.insight}
+              </p>
+            </div>
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="sql-query">
+                <AccordionTrigger className="text-xs font-medium py-2 text-zinc-300 hover:underline">View Generated SQL Query</AccordionTrigger>
+                <AccordionContent>
+                  <pre className="text-xs bg-zinc-800 p-3 rounded-md overflow-x-auto font-mono text-zinc-200 border border-zinc-700">
+                    <code>{queryResult.databaseQuery || "No SQL query generated."}</code>
+                  </pre>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
 
             {queryResult.queryResult && queryResult.queryResult.rows.length > 0 ? (
               <div className="space-y-4">
                 {/* Table View */}
                 <div className="overflow-x-auto">
-                    <Table>
+                  <Table className="text-zinc-200">
                     <TableHeader>
-                        <TableRow>
+                      <TableRow className="bg-zinc-800">
                         {queryResult.queryResult.columns.map((col) => (
-                            <TableHead key={col} className="text-xs">{col}</TableHead> // Smaller header
+                          <TableHead key={col} className="text-xs font-semibold uppercase">{col}</TableHead>
                         ))}
-                        </TableRow>
+                      </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {queryResult.queryResult.rows.map((row, rowIndex) => (
-                        <TableRow key={rowIndex}>
-                            {row.map((cell, cellIndex) => (
-                            <TableCell key={cellIndex} className="text-xs py-1 px-2">{cell}</TableCell> // Smaller cell
-                            ))}
+                      {queryResult.queryResult.rows.map((row, rowIndex) => (
+                        <TableRow key={rowIndex} className={rowIndex % 2 === 0 ? "bg-zinc-900" : "bg-zinc-800/50"}>
+                          {row.map((cell, cellIndex) => (
+                            <TableCell key={cellIndex} className="text-xs py-2 px-3 font-mono">{cell}</TableCell>
+                          ))}
                         </TableRow>
-                        ))}
+                      ))}
                     </TableBody>
-                    </Table>
+                  </Table>
                 </div>
 
-                 {/* Chart View */}
-                 {canDisplayChart && chartData.length > 0 && (
-                    <Card>
-                      <CardHeader className="pb-2">
-                         <CardTitle className="flex items-center gap-2 text-primary text-lg">
-                           <BarChart className="h-5 w-5" /> Chart Visualization
-                         </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <ChartContainer config={chartConfig} className="h-[250px] w-full">
-                            <RechartsBarChart accessibilityLayer data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
-                            <CartesianGrid vertical={false} />
-                            <XAxis
-                                dataKey={queryResult.queryResult.columns[0]} // Use first column name
-                                tickLine={false}
-                                axisLine={false}
-                                tickMargin={8}
-                                tickFormatter={(value) => value.slice(0, 15) + (value.length > 15 ? '...' : '')} // Truncate long labels
-                                className="text-xs"
-                             />
-                            <YAxis className="text-xs" />
-                            <ChartTooltip
-                                cursor={false}
-                                content={<ChartTooltipContent hideLabel />}
-                            />
-                             <Bar dataKey={queryResult.queryResult.columns[Object.keys(chartConfig).findIndex(key => key !== queryResult?.queryResult?.columns[0])]} // Get the value key dynamically
-                                fill="var(--color-primary)"
-                                radius={4}
-                            />
-                            </RechartsBarChart>
-                        </ChartContainer>
-                       </CardContent>
-                    </Card>
-                 )}
+                {/* Chart View */}
+                {canDisplayChart && chartData.length > 0 && (
+                  <Card className="bg-zinc-900 border border-zinc-800">
+                    <CardHeader className="pb-2">
+                      <CardTitle className="flex items-center gap-2 text-blue-400 text-lg">
+                        <BarChart className="h-5 w-5 text-blue-300" /> Chart Visualization
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <ChartContainer config={chartConfig} className="h-[250px] w-full">
+                        <RechartsBarChart accessibilityLayer data={chartData} margin={{ top: 5, right: 20, left: -10, bottom: 5 }}>
+                          <CartesianGrid vertical={false} stroke="#444" />
+                          <XAxis
+                            dataKey={queryResult.queryResult.columns[0]} // Use first column name
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            tickFormatter={(value) => value.slice(0, 15) + (value.length > 15 ? '...' : '')} // Truncate long labels
+                            className="text-xs text-zinc-300"
+                          />
+                          <YAxis className="text-xs text-zinc-300" axisLine={false} tickLine={false} />
+                          <ChartTooltip
+                            cursor={{ fill: 'rgba(0, 0, 0, 0.1)' }}
+                            content={<ChartTooltipContent className="bg-zinc-800 text-zinc-100 border border-zinc-700 rounded-md p-2" />}
+                          />
+                          <Bar dataKey={queryResult.queryResult.columns[Object.keys(chartConfig).findIndex(key => key !== queryResult?.queryResult?.columns[0])]} // Get the value key dynamically
+                            fill="var(--color-blue-500)"
+                            radius={[4, 4, 0, 0]}
+                          />
+                        </RechartsBarChart>
+                      </ChartContainer>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
             ) : queryResult.queryResult ? (
-              <p className="text-sm text-muted-foreground">No data returned for this query.</p>
-            ): (
-               <p className="text-sm text-destructive">Could not execute the generated SQL query or no query was generated.</p>
+              <p className="text-sm text-zinc-400">No data returned for this query.</p>
+            ) : (
+              <p className="text-sm text-red-500">Could not execute the generated SQL query or no query was generated.</p>
             )}
           </CardContent>
         </Card>
       )}
 
-        {isAnalysisPending && (
-            <Card className="shadow-sm">
-                <CardContent className="p-4 flex items-center justify-center"> {/* Reduced padding */}
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin text-accent" />
-                    <p className="text-sm text-muted-foreground">Analyzing data...</p>
-                </CardContent>
-            </Card>
-        )}
+      {isAnalysisPending && (
+        <Card className="bg-zinc-900 border border-zinc-800 shadow-sm animate-pulse">
+          <CardContent className="p-4 flex items-center justify-center">
+            <Loader2 className="mr-2 h-5 w-5 animate-spin text-accent-foreground" />
+            <p className="text-sm text-zinc-400">Analyzing data...</p>
+          </CardContent>
+        </Card>
+      )}
 
       {analysisResult && (
-        <Card className="shadow-lg bg-accent/10 border-accent">
-          <CardHeader className="pb-4"> {/* Reduced padding */}
-            <CardTitle className="flex items-center gap-2 text-accent text-xl"> {/* Smaller title */}
-              <Activity className="h-5 w-5" /> Intelligent Analysis
+        <Card className="bg-zinc-900 border border-zinc-800 shadow-lg">
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-green-400 text-xl">
+              <Activity className="h-5 w-5 text-green-300" /> Intelligent Analysis
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2"> {/* Reduced spacing */}
-            <div className="space-y-1">
-              <h3 className="font-semibold text-sm flex items-center gap-1"><Lightbulb className="h-4 w-4 text-accent"/> Summary:</h3>
-              <p className="text-sm bg-secondary p-2 rounded-md">{analysisResult.summary}</p> {/* Reduced padding */}
+          <CardContent className="space-y-3">
+            <div className="space-y-2">
+              <h3 className="font-semibold text-sm text-yellow-400 flex items-center gap-1">
+                <Lightbulb className="h-4 w-4 text-yellow-300" /> Summary:
+              </h3>
+              <p className="text-sm bg-zinc-800 p-3 rounded-md font-mono text-zinc-200 border border-zinc-700">
+                {analysisResult.summary}
+              </p>
             </div>
-            <div className="space-y-1">
-              <h3 className="font-semibold text-sm flex items-center gap-1"><AlertTriangle className="h-4 w-4 text-destructive"/> Anomalies/Bottlenecks:</h3>
-              <p className="text-sm bg-secondary p-2 rounded-md">{analysisResult.anomalies}</p> {/* Reduced padding */}
+            <div className="space-y-2">
+              <h3 className="font-semibold text-sm text-red-400 flex items-center gap-1">
+                <AlertTriangle className="h-4 w-4 text-red-300" /> Anomalies/Bottlenecks:
+              </h3>
+              <p className="text-sm bg-zinc-800 p-3 rounded-md font-mono text-zinc-200 border border-zinc-700">
+                {analysisResult.anomalies}
+              </p>
             </div>
-            <div className="space-y-1">
-              <h3 className="font-semibold text-sm flex items-center gap-1"><BarChart className="h-4 w-4 text-primary"/> Patterns:</h3>
-              <p className="text-sm bg-secondary p-2 rounded-md">{analysisResult.patterns}</p> {/* Reduced padding */}
+            <div className="space-y-2">
+              <h3 className="font-semibold text-sm text-blue-400 flex items-center gap-1">
+                <BarChart className="h-4 w-4 text-blue-300" /> Patterns:
+              </h3>
+              <p className="text-sm bg-zinc-800 p-3 rounded-md font-mono text-zinc-200 border border-zinc-700">
+                {analysisResult.patterns}
+              </p>
             </div>
           </CardContent>
         </Card>
