@@ -1,6 +1,9 @@
 import { QueryForm } from "@/components/query-form";
+import { CodeExplanationForm } from "@/components/code-explanation-form"; // Import new component
+import { DebuggingForm } from "@/components/debugging-form"; // Import new component
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Code } from "lucide-react"; // Import an appropriate icon
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"; // Import Tabs components
+import { Code, Search, Bug, FileCode } from "lucide-react"; // Import icons
 
 export default function Home() {
   return (
@@ -11,9 +14,31 @@ export default function Home() {
              <Code className="h-8 w-8"/> {/* Example icon */}
              TAP DataSage
            </h1>
-           <p className="text-muted-foreground">Your LLM-Based Data Assistant for AI & Coding</p>
+           <p className="text-muted-foreground">Your Intelligent Assistant for Data Query, Code Analysis & Debugging</p>
          </div>
-         <QueryForm />
+
+         <Tabs defaultValue="query" className="w-full">
+           <TabsList className="grid w-full grid-cols-3">
+             <TabsTrigger value="query">
+                <Search className="mr-2 h-4 w-4" /> Query Data
+             </TabsTrigger>
+             <TabsTrigger value="explain">
+                <FileCode className="mr-2 h-4 w-4" /> Explain Code
+             </TabsTrigger>
+             <TabsTrigger value="debug">
+               <Bug className="mr-2 h-4 w-4" /> Debug Error
+             </TabsTrigger>
+           </TabsList>
+           <TabsContent value="query" className="mt-6">
+             <QueryForm />
+           </TabsContent>
+           <TabsContent value="explain" className="mt-6">
+             <CodeExplanationForm />
+           </TabsContent>
+           <TabsContent value="debug" className="mt-6">
+             <DebuggingForm />
+           </TabsContent>
+         </Tabs>
       </div>
     </main>
   );
