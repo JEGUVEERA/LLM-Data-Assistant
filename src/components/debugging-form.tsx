@@ -11,7 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Loader2, Bug, Lightbulb, AlertCircle, ExternalLink } from "lucide-react"; // Added icons
+import { Loader2, Bug, Lightbulb, AlertCircle, ExternalLink, Wrench } from "lucide-react"; // Added Wrench icon
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -63,7 +63,7 @@ export function DebuggingForm() {
             <Bug className="h-5 w-5" /> Debugging Assistance
           </CardTitle>
           <CardDescription className="text-sm">
-            Paste an error log or message below to get potential causes and debugging suggestions.
+            Paste an error log or message below to get potential causes, debugging suggestions, and potential fixes.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -163,9 +163,15 @@ export function DebuggingForm() {
                 <div className="text-sm bg-secondary p-3 rounded-md whitespace-pre-wrap">{debuggingResult.potentialCauses}</div>
              </div>
              <div className="space-y-1">
-                <h3 className="font-semibold text-sm flex items-center gap-1"><Bug className="h-4 w-4 text-primary"/> Suggestions:</h3>
+                <h3 className="font-semibold text-sm flex items-center gap-1"><Bug className="h-4 w-4 text-primary"/> Debugging Suggestions:</h3>
                 <div className="text-sm bg-secondary p-3 rounded-md whitespace-pre-wrap">{debuggingResult.suggestions}</div>
              </div>
+             {debuggingResult.suggestedFixes && ( // Display suggested fixes
+                 <div className="space-y-1">
+                    <h3 className="font-semibold text-sm flex items-center gap-1"><Wrench className="h-4 w-4 text-accent"/> Suggested Fixes:</h3>
+                    <div className="text-sm bg-secondary p-3 rounded-md whitespace-pre-wrap">{debuggingResult.suggestedFixes}</div>
+                 </div>
+             )}
              {debuggingResult.relevantResources && (
                  <div className="space-y-1">
                     <h3 className="font-semibold text-sm flex items-center gap-1"><ExternalLink className="h-4 w-4 text-muted-foreground"/> Relevant Resources:</h3>

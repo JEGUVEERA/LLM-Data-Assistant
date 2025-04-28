@@ -20,7 +20,8 @@ export type DebuggingInput = z.infer<typeof DebuggingInputSchema>;
 const DebuggingOutputSchema = z.object({
   potentialCauses: z.string().describe('A list of potential root causes for the error.'),
   suggestions: z.string().describe('Actionable suggestions and steps for debugging the error.'),
-  relevantResources: z.string().optional().describe('Links to relevant documentation or resources, if applicable.'), // Added optional resources
+  suggestedFixes: z.string().optional().describe('Potential code fixes or approaches to resolve the error.'), // Added suggested fixes
+  relevantResources: z.string().optional().describe('Links to relevant documentation or resources, if applicable.'),
 });
 export type DebuggingOutput = z.infer<typeof DebuggingOutputSchema>;
 
@@ -47,13 +48,17 @@ const debugErrorPrompt = ai.definePrompt({
   Based on the error log and context:
   1. Identify the most likely potential root causes.
   2. Provide clear, actionable debugging steps or suggestions.
-  3. If possible, suggest relevant documentation or online resources.
+  3. Suggest potential code fixes or approaches to resolve the error, if applicable.
+  4. If possible, suggest relevant documentation or online resources.
 
   Potential Causes:
   [List potential causes here]
 
   Debugging Suggestions:
   [Provide debugging steps here]
+
+  Suggested Fixes:
+  [Provide potential code fixes or approaches here, if applicable]
 
   Relevant Resources:
   [Provide links or resource suggestions here, if applicable]
@@ -78,3 +83,4 @@ const debugErrorFlow = ai.defineFlow<
     return output;
   }
 );
+
