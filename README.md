@@ -6,7 +6,7 @@
 2. [Installation](#installation)
 3. [Usage](#usage)
 4. [Contributing](#contributing)
-5. [License](#license)
+
 
 ## Description
 
@@ -78,5 +78,4 @@ Contributions are welcome! If you'd like to contribute, please follow these guid
 6.  Open a Pull Request.
 
 Please ensure your code adheres to the project's coding standards and includes tests where applicable.
-
 
