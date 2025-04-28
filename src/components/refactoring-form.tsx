@@ -9,7 +9,7 @@ import { suggestRefactoring, type RefactoringOutput } from "@/ai/flows/refactori
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage, FormDescription } from "@/components/ui/form"; // Import FormDescription
 import { Input } from "@/components/ui/input";
 import { Loader2, Wand2, Lightbulb } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
